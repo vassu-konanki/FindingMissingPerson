@@ -1,10 +1,24 @@
-from sqlmodel import SQLModel, Session, select
+import streamlit as st
+from sqlmodel import SQLModel, Session, select, create_engine
 from pages.helper.data_models import RegisteredCases, PublicSubmissions
-from db_connection import get_engine
 
-# Get cloud database engine
-engine = get_engine()
+# ---------------- DATABASE CONNECTION ---------------- #
 
+DB_HOST = st.secrets["DB_HOST"]
+DB_NAME = st.secrets["DB_NAME"]
+DB_USER = st.secrets["DB_USER"]
+DB_PASSWORD = st.secrets["DB_PASSWORD"]
+DB_PORT = st.secrets["DB_PORT"]
+
+DATABASE_URL = (
+    f"postgresql+psycopg2://{DB_USER}:{DB_PASSWORD}"
+    f"@{DB_HOST}:{DB_PORT}/{DB_NAME}"
+)
+
+engine = create_engine(DATABASE_URL, echo=False)
+
+
+# ---------------- CREATE TABLES ---------------- #
 
 def create_db():
     SQLModel.metadata.create_all(engine)
