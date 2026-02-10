@@ -1,13 +1,54 @@
+import os
+from sqlalchemy import create_engine, text
+from sqlalchemy.orm import sessionmaker
 import streamlit as st
-from sqlmodel import create_engine
 
-def get_engine():
-    db_url = (
-        f"postgresql+psycopg2://"
-        f"{st.secrets['DB_USER']}:"
-        f"{st.secrets['DB_PASSWORD']}@"
-        f"{st.secrets['DB_HOST']}:"
-        f"{st.secrets['DB_PORT']}/"
-        f"{st.secrets['DB_NAME']}"
-    )
-    return create_engine(db_url, echo=False)
+# -------------------------------------
+# GET DATABASE URL
+# -------------------------------------
+def get_database_url():
+    # For Streamlit Cloud
+    if "db_url" in st.secrets:
+        return st.secrets["db_url"]
+
+    # For local development
+    return os.getenv("DATABASE_URL")
+
+
+DATABASE_URL = get_database_url()
+
+if not DATABASE_URL:
+    raise ValueError("Database URL not found. Set it in secrets.toml or env variable.")
+
+# -------------------------------------
+# CREATE ENGINE
+# -------------------------------------
+engine = create_engine(DATABASE_URL, pool_pre_ping=True)
+
+SessionLocal = sessionmaker(bind=engine)
+
+
+# -------------------------------------
+# HELPER FUNCTIONS
+# -------------------------------------
+def get_connection():
+    return engine.connect()
+
+
+def execute_query(query, params=None):
+    with engine.connect() as conn:
+        result = conn.execute(text(query), params or {})
+        conn.commit()
+        return result
+
+
+def fetch_all(query, params=None):
+    with engine.connect() as conn:
+        result = conn.execute(text(query), params or {})
+        return result.fetchall()
+
+
+def fetch_one(query, params=None):
+    with engine.connect() as conn:
+        result = conn.execute(text(query), params or {})
+        return result.fetchone()
