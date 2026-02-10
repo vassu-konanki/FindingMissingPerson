@@ -1,8 +1,9 @@
-from sqlmodel import SQLModel, create_engine, Session, select
+from sqlmodel import SQLModel, Session, select
 from pages.helper.data_models import RegisteredCases, PublicSubmissions
+from db_connection import get_engine
 
-sqlite_url = "sqlite:///sqlite_database.db"
-engine = create_engine(sqlite_url)
+# Get cloud database engine
+engine = get_engine()
 
 
 def create_db():
@@ -157,7 +158,7 @@ def get_registered_cases_count(submitted_by: str, status: str):
         return result
 
 
-# ---------------- 🔥 MISSING FUNCTION (FIX) ---------------- #
+# ---------------- LINK CASES ---------------- #
 
 def link_cases(registered_case_id: str, public_case_id: str):
     """
