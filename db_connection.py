@@ -7,11 +7,11 @@ import streamlit as st
 # GET DATABASE URL
 # -------------------------------------
 def get_database_url():
-    # For Streamlit Cloud
+    # Streamlit Cloud
     if "db_url" in st.secrets:
         return st.secrets["db_url"]
 
-    # For local development
+    # Local environment
     return os.getenv("DATABASE_URL")
 
 
@@ -24,9 +24,13 @@ if not DATABASE_URL:
 # CREATE ENGINE
 # -------------------------------------
 engine = create_engine(DATABASE_URL, pool_pre_ping=True)
-
 SessionLocal = sessionmaker(bind=engine)
 
+# -------------------------------------
+# ENGINE ACCESS (for old code)
+# -------------------------------------
+def get_engine():
+    return engine
 
 # -------------------------------------
 # HELPER FUNCTIONS
