@@ -5,7 +5,7 @@ from yaml import SafeLoader
 import streamlit_authenticator as stauth
 
 from pages.helper import db_queries
-from ai.pages.helper.db_queries import create_db
+from pages.helper.db_queries import create_db
 from insightface.app import FaceAnalysis
 
 # ---------------- CREATE TABLES (NEW) ---------------- #
