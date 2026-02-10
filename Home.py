@@ -5,7 +5,7 @@ from yaml import SafeLoader
 import streamlit_authenticator as stauth
 
 from pages.helper import db_queries
-
+from insightface.app import FaceAnalysis
 
 # ---------------- UI HELPERS ---------------- #
 
