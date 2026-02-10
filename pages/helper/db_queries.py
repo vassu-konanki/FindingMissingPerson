@@ -1,14 +1,8 @@
 from sqlmodel import SQLModel, create_engine, Session, select
 from pages.helper.data_models import RegisteredCases, PublicSubmissions
-from pages.helper.utils import DB_PATH
 
-# ==============================
-# SHARED DATABASE ENGINE
-# ==============================
-
-# Use central database path from utils.py
-sqlite_url = f"sqlite:///{DB_PATH}"
-engine = create_engine(sqlite_url, echo=False)
+sqlite_url = "sqlite:///sqlite_database.db"
+engine = create_engine(sqlite_url)
 
 
 def create_db():
@@ -163,7 +157,7 @@ def get_registered_cases_count(submitted_by: str, status: str):
         return result
 
 
-# ---------------- MATCH WRAPPER ---------------- #
+# ---------------- 🔥 MISSING FUNCTION (FIX) ---------------- #
 
 def link_cases(registered_case_id: str, public_case_id: str):
     """

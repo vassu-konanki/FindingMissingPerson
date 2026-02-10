@@ -5,10 +5,7 @@ from yaml import SafeLoader
 import streamlit_authenticator as stauth
 
 from pages.helper import db_queries
-
-# ---------------- DB INIT (CRITICAL FIX) ---------------- #
-db_queries.create_db()
-
+from insightface.app import FaceAnalysis
 
 # ---------------- UI HELPERS ---------------- #
 
@@ -101,8 +98,6 @@ if auth_status is True:
     )
 
     st.write("---")
-
-    # ---------------- FETCH CASE COUNTS ---------------- #
 
     found_cases = db_queries.get_registered_cases_count(name, "F")
     non_found_cases = db_queries.get_registered_cases_count(name, "NF")
